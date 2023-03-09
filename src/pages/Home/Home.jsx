@@ -1,7 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../data/constant'
-import robotHead from '../../assets/robot-head.webp'
 import BrobotAvatar from '../../components/BrobotAvatar'
 import useLocalStorage from '../../hooks/useLocalStorage'
 
@@ -19,6 +18,7 @@ function Home() {
         <div className='h-full w-full px-6 flex flex-col gap-10 justify-center items-center'>
             <BrobotAvatar />
             <div className='flex flex-col gap-4 text-center'>
+                <h1 className='font-bold text-xl'>Brobot V1</h1>
                 <p>👋 Hey there! Are you ready to chat with the coolest bot in town? 💁‍♀️💁‍♂️</p>
                 <p>💣 This chat bot app is the bomb dot com! It'll make you laugh, it'll make you swoon, and it'll always have a witty response. 💬💭</p>
                 <p>🤩 So go ahead, hit me up and let's get this conversation poppin'! 🔥🎉</p>

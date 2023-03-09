@@ -1,12 +1,9 @@
 
 import { Navigate, BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import { useAuthState } from "react-firebase-hooks/auth"
-import { auth } from "./firebase.config";
 import Login from "./pages/Login/Login"
 import Home from "./pages/Home/Home"
 import Chatbox from "./pages/Chatbox/Chatbox";
 import { ROUTES } from "./data/constant";
-import Welcome from "./pages/Welcome/Welcome";
 import useLocalStorage from "./hooks/useLocalStorage";
 
 function App() {
