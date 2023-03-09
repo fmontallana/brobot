@@ -1,11 +1,11 @@
 import axios from "axios"
 
-export const postRequest = (url, params) => {
-    return axios.post(url, params)
+export const postRequest = (endpoint, params) => {
+    return axios.post(import.meta.env.VITE_API_BASE_URL + endpoint, params)
 }
 
-export const getRequest = (url, params) => {
-    return axios.get(url, {
+export const getRequest = (endpoint, params) => {
+    return axios.get(import.meta.env.VITE_API_BASE_URL + endpoint, {
         params
     })
 }

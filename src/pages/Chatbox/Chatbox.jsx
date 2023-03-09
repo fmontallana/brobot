@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import axios from 'axios'
 import Bubble from './Bubble'
 import { getRequest, postRequest } from '../../api/request'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import useLocalStorage from '../../hooks/useLocalStorage'
 
 
@@ -32,7 +30,7 @@ function Chatbox() {
         //     message: `Hey ${user?.displayName?.split(" ")[0]}! What's up? 🤔`,
         //     time: "12:00"
         // }])
-        getRequest('http://localhost:5001/api/messages', { uid: user?.uid })
+        getRequest('api/messages', { uid: user?.uid })
             .then(res => {
                 if (res.data.length === 0) return
                 const newMessages = res?.data?.map(message => {
@@ -99,7 +97,7 @@ function Chatbox() {
             }
         })
 
-        postRequest('http://localhost:5001/api/getcompletion', { messages: newMessages, uid: user?.uid })
+        postRequest('api/getcompletion', { messages: newMessages, uid: user?.uid })
             .then((res) => {
                 console.log(res.data)
                 const newMessages = [res.data].map(message => {

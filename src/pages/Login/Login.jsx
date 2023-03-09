@@ -15,7 +15,7 @@ function Login() {
         // console.log(data.user.providerData[0])
         const userData = { ...data.user.providerData[0], uid: data.user.uid }
         setUserData(userData)
-        postRequest('http://localhost:5001/api/users', userData)
+        postRequest('api/users', userData)
             .then(res => console.log(res.data))
         nav(ROUTES.HOME)
     }
