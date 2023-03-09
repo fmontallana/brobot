@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import Bubble from './Bubble'
+import { postRequest } from '../../api/request'
 
 function Chatbox({ user }) {
 
@@ -60,7 +61,7 @@ function Chatbox({ user }) {
             }
         })
 
-        axios.post('http://localhost:3001/api/getcompletion', newMessages)
+        postRequest('http://localhost:5001/api/getcompletion', newMessages)
             .then((res) => {
                 console.log(res.data)
                 const newMessages = [res.data].map(message => {
@@ -75,30 +76,6 @@ function Chatbox({ user }) {
             .finally(() => {
                 setTyping(false)
             })
-
-
-        // fetch('https://localhost:3001/api/get-completion', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(newMessages),
-        // })
-        //     .then((res) => res.json())
-        //     .then((data) => {
-        //         console.log(data)
-        //         const newMessages = [data].map(message => {
-        //             return {
-        //                 role: message.role === "user" ? "user" : "AI",
-        //                 message: message.content,
-        //                 time: "12:00"
-        //             }
-        //         })
-        //         setMessages(prev => [...prev, ...newMessages])
-        //     })
-        //     .finally(() => {
-        //         setTyping(false)
-        //     })
 
         setScrollDelay(500)
         setInputValue("")

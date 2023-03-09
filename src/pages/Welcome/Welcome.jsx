@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { ROUTES } from "../../data/constant";
 import { auth } from "../../firebase.config";
 
-function Chat() {
+function Welcome() {
 
     const [signOut, loading, error] = useSignOut(auth);
     const [user, userLoading, userError] = useAuthState(auth)
@@ -25,4 +25,4 @@ function Chat() {
     )
 }
 
-export default Chat
+export default Welcome
