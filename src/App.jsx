@@ -14,14 +14,16 @@ function App() {
   const [user] = useLocalStorage("user")
 
   return (
-    <Router>
-      <Routes>
-        <Route path={ROUTES.HOME} element={user ? <Welcome /> : <Home />} />
-        <Route path={ROUTES.LOGIN} element={<Login />} />
-        <Route path={ROUTES.CHAT} element={user ? <Chatbox /> : <Navigate to={ROUTES.LOGIN} />} />
-        <Route path={ROUTES.NOT_FOUND} element={<h1>Page Not Found</h1>} />
-      </Routes>
-    </Router>
+    <div className="h-[100dvh] max-w-sm mx-auto">
+      <Router>
+        <Routes>
+          <Route path={ROUTES.HOME} element={<Home />} />
+          <Route path={ROUTES.LOGIN} element={!user ? <Login /> : <Navigate to={ROUTES.CHAT} />} />
+          <Route path={ROUTES.CHAT} element={user ? <Chatbox /> : <Navigate to={ROUTES.LOGIN} />} />
+          <Route path={ROUTES.NOT_FOUND} element={<h1>Page Not Found</h1>} />
+        </Routes>
+      </Router>
+    </div>
   )
 }
 

@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.anim-delay:nth-of-type(1) {
+    animation-delay: 0s;
+  }
+  
+.anim-delay:nth-of-type(2) {
+    animation-delay: 0.15s;
+  }
+  
+.anim-delay:nth-of-type(3) {
+    animation-delay: 0.3s;
+  }
+  

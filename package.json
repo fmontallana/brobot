@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "start": "serve -s ./dist",
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
-    "preview": "vite preview --port 8080"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.26.1",
@@ -17,6 +17,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.1.1",
+    "react-icons": "^4.8.0",
     "react-router-dom": "^6.8.2",
     "serve": "^14.2.0"
   },

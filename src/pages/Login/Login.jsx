@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom"
 import useLocalStorage from "../../hooks/useLocalStorage"
 import { ROUTES } from "../../data/constant"
 import { postRequest } from "../../api/request"
+import BrobotAvatar from "../../components/BrobotAvatar"
 
 function Login() {
 
     const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth)
     const [userData, setUserData] = useLocalStorage("user", user)
     const nav = useNavigate()
+
     const handleGoogleSignIn = async () => {
         const data = await signInWithGoogle()
         // console.log(data.user.providerData[0])
@@ -17,13 +19,14 @@ function Login() {
         setUserData(userData)
         postRequest('api/users', userData)
             .then(res => console.log(res.data))
-        nav(ROUTES.HOME)
+            .finally(() => window.location.reload())
     }
 
     return (
-        <div>
-            <h1>Login</h1>
-            <button onClick={handleGoogleSignIn}>Sign In with Google</button>
+        <div className="h-full w-full flex flex-col gap-4 justify-center items-center">
+            <BrobotAvatar />
+            {/* <h1>Login</h1> */}
+            <button className="btn glass" onClick={handleGoogleSignIn}>Sign In with Google</button>
         </div>
     )
 }
