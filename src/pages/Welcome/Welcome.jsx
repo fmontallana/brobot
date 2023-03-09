@@ -2,15 +2,17 @@ import { useAuthState, useSignOut } from "react-firebase-hooks/auth"
 import { useNavigate } from "react-router-dom"
 import { ROUTES } from "../../data/constant";
 import { auth } from "../../firebase.config";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 function Welcome() {
 
     const [signOut, loading, error] = useSignOut(auth);
-    const [user, userLoading, userError] = useAuthState(auth)
+    const [user, setUser] = useLocalStorage("user")
     const nav = useNavigate()
 
     const handlerLogout = () => {
         signOut()
+        window.localStorage.removeItem("user")
         nav(ROUTES.LOGIN)
     }
 

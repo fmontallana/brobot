@@ -1,20 +1,56 @@
 import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import Bubble from './Bubble'
-import { postRequest } from '../../api/request'
+import { getRequest, postRequest } from '../../api/request'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import useLocalStorage from '../../hooks/useLocalStorage'
 
-function Chatbox({ user }) {
 
+
+
+function Chatbox() {
+
+    const [user] = useLocalStorage("user")
     const [scrollDelay, setScrollDelay] = useState(0)
     const [inputValue, setInputValue] = useState("")
     const [typing, setTyping] = useState(false)
+    const scroll = useRef(null)
+    const input = useRef(null)
     const [messages, setMessages] = useState([{
         role: "AI",
         message: `Hey ${user?.displayName?.split(" ")[0]}! What's up? 🤔`,
         time: "12:00"
     }])
-    const scroll = useRef(null)
-    const input = useRef(null)
+
+
+
+    scroll?.current?.scrollIntoView({ behavior: 'smooth' })
+
+    useEffect(() => {
+        // setMessages([{
+        //     role: "AI",
+        //     message: `Hey ${user?.displayName?.split(" ")[0]}! What's up? 🤔`,
+        //     time: "12:00"
+        // }])
+        getRequest('http://localhost:5001/api/messages', { uid: user?.uid })
+            .then(res => {
+                if (res.data.length === 0) return
+                const newMessages = res?.data?.map(message => {
+                    return {
+                        role: message.role === "user" ? "user" : "AI",
+                        message: message.content,
+                        time: "12:00"
+                    }
+                })
+
+                setMessages([{
+                    role: "AI",
+                    message: `Hey ${user?.displayName?.split(" ")[0]}! What's up? 🤔`,
+                    time: "12:00"
+                }, ...newMessages])
+            })
+    }, [])
+
 
     // auto scroll to bottom
     useEffect(() => {
@@ -44,13 +80,15 @@ function Chatbox({ user }) {
     const handleSend = () => {
         if (inputValue.length === 0) return
 
+        setTyping(true)
+
         setMessages(prev => [...prev, {
             role: "user",
             message: inputValue,
             time: "12:00"
         }])
-        setTyping(true)
-        const newMessages = [...messages, {
+
+        const newMessages = [{
             role: "user",
             message: inputValue,
             time: "12:00"
@@ -61,7 +99,7 @@ function Chatbox({ user }) {
             }
         })
 
-        postRequest('http://localhost:5001/api/getcompletion', newMessages)
+        postRequest('http://localhost:5001/api/getcompletion', { messages: newMessages, uid: user?.uid })
             .then((res) => {
                 console.log(res.data)
                 const newMessages = [res.data].map(message => {
@@ -85,7 +123,8 @@ function Chatbox({ user }) {
     return (
         <div className='container h-[100dvh] max-w-sm mx-auto flex flex-col justify-end items-end'>
             <div className='py-4 flex flex-col gap-4 items-center w-full mx-auto overflow-y-scroll '>
-                {messages.map((message, index) => {
+
+                {messages?.map((message, index) => {
                     return (
                         <Bubble key={index} role={message.role} message={message.message} time={message.time} />
                     )

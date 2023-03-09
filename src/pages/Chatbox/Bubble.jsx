@@ -1,5 +1,6 @@
 import React from 'react'
 import useLocalStorage from '../../hooks/useLocalStorage'
+import robot from '../../assets/robot-head.webp'
 
 function Bubble({ role, message, time }) {
 
@@ -9,7 +10,7 @@ function Bubble({ role, message, time }) {
         <div className={`flex gap-2 w-full h-full px-2 ${role === "user" ? "flex-row-reverse" : ""} `}>
             {/* profile picture */}
             <div className='flex-shrink-0'>
-                {role === "user" ? <img src={user?.photoURL || "https://picsum.photos/40"} alt="profile picture" className="rounded-full w-10 h-10 border border-secondary-focus" /> : <img src={"https://picsum.photos/40"} height={10} width={10} alt="profile picture" className="rounded-full w-10 h-10 border border-secondary-focus" />}
+                {role === "user" ? <img src={user?.photoURL || "https://picsum.photos/40"} alt="profile picture" className="rounded-full w-10 h-10 border border-secondary-focus" /> : <img src={robot} height={10} width={10} alt="profile picture" className="rounded-full w-10 h-10 border border-secondary-focus" />}
                 {/* <img src={"https://picsum.photos/200"} alt="profile picture" className="rounded-full w-10 h-10" /> */}
             </div>
             {/* chat message */}

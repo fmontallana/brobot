@@ -3,6 +3,7 @@ import { auth } from "../../firebase.config"
 import { useNavigate } from "react-router-dom"
 import useLocalStorage from "../../hooks/useLocalStorage"
 import { ROUTES } from "../../data/constant"
+import { postRequest } from "../../api/request"
 
 function Login() {
 
@@ -12,7 +13,10 @@ function Login() {
     const handleGoogleSignIn = async () => {
         const data = await signInWithGoogle()
         // console.log(data.user.providerData[0])
-        setUserData({ ...data.user.providerData[0], uid: data.user.uid })
+        const userData = { ...data.user.providerData[0], uid: data.user.uid }
+        setUserData(userData)
+        postRequest('http://localhost:5001/api/users', userData)
+            .then(res => console.log(res.data))
         nav(ROUTES.HOME)
     }
 
