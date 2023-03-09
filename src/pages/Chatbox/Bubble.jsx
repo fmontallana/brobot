@@ -20,7 +20,7 @@ function Bubble({ role, message, time, children }) {
                     {/* <span>|</span> */}
                     {/* <span className="text-primary text-xs">12:00</span> */}
                 </div>
-                <p className={`${role === "user" ? "bg-primary-content" : "border border-primary-content"} glass hover:unset text-slate-200 flex-1 px-2 py-1 rounded grid place-items-center`}>{message || children}</p>
+                <p className={`${role === "user" ? "bg-primary-content" : "border border-primary-content"} text-slate-200 flex-1 px-2 py-1 rounded grid place-items-center`}>{message || children}</p>
 
             </div>
         </div>
