@@ -5,64 +5,60 @@ import useLocalStorage from '../../hooks/useLocalStorage'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../data/constant'
 import { TbHome2, TbSend } from 'react-icons/tb'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { auth } from '../../firebase.config'
+import { useUserStore } from '../../stores/user.store'
+import { useMessagesStore } from '../../stores/messages.store'
 
 
 
 
 function Chatbox() {
     const nav = useNavigate()
-    const [user] = useLocalStorage("user")
-    const [scrollDelay, setScrollDelay] = useState(0)
+    const [user, loading, error] = useAuthState(auth)
+    const [scrollDelay, setScrollDelay] = useState(500)
     const [inputValue, setInputValue] = useState("")
     const [typing, setTyping] = useState(false)
     const scroll = useRef(null)
     const input = useRef(null)
-    const [messages, setMessages] = useState([{
-        role: "AI",
-        message: `Hey ${user?.displayName?.split(" ")[0]}! What's up? 🤔`,
-        time: "12:00"
-    }])
+    const messages = useMessagesStore(state => state.messages)
+    const setMessages = useMessagesStore(state => state.setMessages)
+    const addMessage = useMessagesStore(state => state.addMessage)
 
 
 
-    scroll?.current?.scrollIntoView({ behavior: 'smooth' })
-
+    //scroll to bottom on load
     useEffect(() => {
-        // setMessages([{
-        //     role: "AI",
-        //     message: `Hey ${user?.displayName?.split(" ")[0]}! What's up? 🤔`,
-        //     time: "12:00"
-        // }])
-        getRequest('api/messages', { uid: user?.uid })
-            .then(res => {
-                if (res.data.length === 0) return
-                const newMessages = res?.data?.map(message => {
-                    return {
-                        role: message.role === "user" ? "user" : "AI",
-                        message: message.content,
-                        time: "12:00"
-                    }
-                })
+        const timeout = setTimeout(() => {
+            scroll?.current?.scrollIntoView({ behavior: 'smooth' })
+        }, 1000)
 
-                setMessages([{
-                    role: "AI",
-                    message: `Hey ${user?.displayName?.split(" ")[0]}! What's up? 🤔`,
-                    time: "12:00"
-                }, ...newMessages])
-            })
+        return () => clearTimeout(timeout)
     }, [])
 
-
-    // auto scroll to bottom
+    // get messages from db
     useEffect(() => {
-        if (scrollDelay === 0) return
+        if (!user) return
+        getRequest('api/messages', { uid: user?.uid })
+            .then(res => {
+                // res.data is an array of messages
+                setMessages([{
+                    role: "assistant",
+                    content: `Hey ${user?.displayName?.split(" ")[0]}! What's up? 🤔`,
+                }, ...res.data])
+            })
+    }, [user])
+
+    // auto scroll to bottom when new message is added
+    useEffect(() => {
+
         const timeout = setTimeout(() => {
             scroll?.current?.scrollIntoView({ behavior: 'smooth' })
         }, scrollDelay)
 
         return () => clearTimeout(timeout)
 
-    }, [messages, scrollDelay])
+    }, [messages])
 
     // handle enter key
     useEffect(() => {
@@ -83,39 +79,23 @@ function Chatbox() {
 
         setTyping(true)
 
-        setMessages(prev => [...prev, {
+        addMessage([{
             role: "user",
-            message: inputValue,
-            time: "12:00"
+            content: inputValue,
         }])
 
         const newMessages = [{
             role: "user",
-            message: inputValue,
-            time: "12:00"
-        }].map(message => {
-            return {
-                role: message.role === "user" ? "user" : "assistant",
-                content: message.message
-            }
-        })
+            content: inputValue,
+        }]
 
-        postRequest('api/getcompletion', { messages: newMessages, uid: user?.uid })
+        postRequest('api/getcompletion', { content: newMessages, uid: user?.uid })
             .then((res) => {
-                const newMessages = [res.data].map(message => {
-                    return {
-                        role: message.role === "user" ? "user" : "AI",
-                        message: message.content,
-                        time: "12:00"
-                    }
-                })
-                setMessages(prev => [...prev, ...newMessages])
+                //res.data is object
+                addMessage([res.data])
             })
-            .finally(() => {
-                setTyping(false)
-            })
+            .finally(() => setTyping(false))
 
-        setScrollDelay(500)
         setInputValue("")
     }
 
@@ -126,14 +106,14 @@ function Chatbox() {
 
                 {messages?.map((message, index) => {
                     return (
-                        <Bubble key={index} role={message.role} message={message.message} time={message.time} />
+                        <Bubble key={index} role={message.role} message={message.content} time={message.time} />
                     )
                 })}
                 {typing && <Bubble role={"AI"} >
                     <div className='h-full flex items-end gap-1'>
-                        <span className='h-2 w-2 glass rounded-full animate-bounce anim-delay'></span>
-                        <span className='h-2 w-2 glass rounded-full animate-bounce anim-delay'></span>
-                        <span className='h-2 w-2 glass rounded-full animate-bounce anim-delay'></span>
+                        <span className='h-2 w-2 bg-slate-300 rounded-full animate-bounce anim-delay'></span>
+                        <span className='h-2 w-2 bg-slate-300 rounded-full animate-bounce anim-delay'></span>
+                        <span className='h-2 w-2 bg-slate-300 rounded-full animate-bounce anim-delay'></span>
                     </div>
                 </Bubble>}
 

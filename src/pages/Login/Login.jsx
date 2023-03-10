@@ -1,24 +1,28 @@
 import { useSignInWithGoogle } from "react-firebase-hooks/auth"
 import { auth } from "../../firebase.config"
-import { useNavigate } from "react-router-dom"
 import useLocalStorage from "../../hooks/useLocalStorage"
-import { ROUTES } from "../../data/constant"
 import { postRequest } from "../../api/request"
 import BrobotAvatar from "../../components/BrobotAvatar"
 
 function Login() {
 
     const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth)
-    const [userData, setUserData] = useLocalStorage("user", user)
-    const nav = useNavigate()
+    const [isLoggedIn, setIsLoggedIn] = useLocalStorage("auth")
 
     const handleGoogleSignIn = async () => {
+
         const data = await signInWithGoogle()
-        // console.log(data.user.providerData[0])
+        if (data === undefined || null) {
+            alert("Something went wrong. Please try again later.")
+            return
+        }
+
         const userData = { ...data.user.providerData[0], uid: data.user.uid }
-        setUserData(userData)
+
+        setIsLoggedIn(true)
         postRequest('api/users', userData)
             .then(res => console.log(res.data))
+            .catch(err => console.log(err))
             .finally(() => window.location.reload())
     }
 
