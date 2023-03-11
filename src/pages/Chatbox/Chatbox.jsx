@@ -30,8 +30,8 @@ function Chatbox() {
     //scroll to bottom on load
     useEffect(() => {
         const timeout = setTimeout(() => {
-            scroll?.current?.scrollIntoView({ behavior: 'smooth' })
-        }, 1000)
+            scroll?.current?.scrollIntoView({ behavior: "instant" })
+        }, 500)
 
         return () => clearTimeout(timeout)
     }, [])
