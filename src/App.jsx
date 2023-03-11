@@ -22,6 +22,8 @@ function App() {
     setUser(user)
   }, [user])
 
+  console.log("Environment: ", process.env.NODE_ENV)
+
   return (
     <div className="h-[100dvh] max-w-sm mx-auto">
       <Router>

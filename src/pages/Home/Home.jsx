@@ -21,6 +21,8 @@ function Home() {
         window.location.reload()
     }
 
+
+
     return (
         <div className='h-full w-full px-6 flex flex-col gap-10 justify-center items-center'>
             <BrobotAvatar />
