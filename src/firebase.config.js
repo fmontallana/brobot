@@ -6,13 +6,14 @@ import { getAuth } from "firebase/auth"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyASVsj2ZgFdgFHjJOodwNcfBa6G7pjKUI4",
-    authDomain: "brobot-app.firebaseapp.com",
-    projectId: "brobot-app",
-    storageBucket: "brobot-app.appspot.com",
-    messagingSenderId: "136825056550",
-    appId: "1:136825056550:web:3b36db814f9623854965e7"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_APP_ID
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
