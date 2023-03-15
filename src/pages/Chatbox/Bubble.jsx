@@ -17,7 +17,7 @@ function Bubble({ role, message, time, children }) {
                 <img src={role === "user" ? user?.photoURL || `https://ui-avatars.com/api/?name=${user?.displayName}` : robot} alt="profile picture" className="rounded-full w-8 h-8 border border-secondary-focus" />
             </div>
             {/* chat message */}
-            <div className={`flex-1 min-h-14 flex flex-col ${role === "user" ? "text-right items-end" : "items-start"}`}>
+            <div className={`flex-1 min-h-14 flex flex-col ${role === "user" ? "items-end" : "items-start"}`}>
 
                 <div className={`${role === "user" ? "bg-primary-content" : "border border-primary-content"} text-slate-200 px-2 py-1 rounded grid place-items-center`}>{message || children}</div>
             </div>
