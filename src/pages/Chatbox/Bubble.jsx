@@ -19,7 +19,7 @@ function Bubble({ role, message, time, children }) {
             {/* chat message */}
             <div className={`flex-1 min-h-14 flex flex-col ${role === "user" ? "items-end" : "items-start"}`}>
 
-                <div className={`${role === "user" ? "bg-primary-content" : "border border-primary-content"} text-slate-200 px-2 py-1 rounded grid place-items-center`}>{message || children}</div>
+                <div className={`${role === "user" ? "bg-primary-content" : "border border-primary-content"} text-slate-200 h-full px-2 py-1 rounded grid place-items-center`}>{message || children}</div>
             </div>
             <div className='w-8' />
         </div>
